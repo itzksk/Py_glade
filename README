@@ -1,4 +1,7 @@
-Try to keep track of what file is the one you are going to make changes in.
-there are multiple files in this..you may lose track of it.
+- currently working in mar20.py.
+- should do the job using multithreading.
+- main_thread should block in gtk.main() and will wait listening to events.
+- upon event, the event handler will be incoked, which will spawn a thread to finish the job.
+- Do not forget the thread clean-up process.
 
 Thank You

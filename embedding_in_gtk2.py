@@ -35,7 +35,7 @@ s = sin(2*pi*t)
 
 ax.plot(t,s)
 
-'''
+
 canvas = FigureCanvas(fig)  # a gtk.DrawingArea
 vbox.pack_start(canvas)
 toolbar = NavigationToolbar(canvas, win)
@@ -47,6 +47,6 @@ def on_key_event(event):
     key_press_handler(event, canvas, toolbar)
 
 canvas.mpl_connect('key_press_event', on_key_event)
-'''
+
 win.show_all()
 gtk.main()
