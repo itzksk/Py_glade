@@ -1,5 +1,6 @@
+#!/usr/bin/python
 '''  script for test1.glade'''
-
+import pdb
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -10,6 +11,7 @@ from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanva
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 import random 
 import time
+import thread
 
 FALSE = gtk.FALSE
 TRUE = gtk.TRUE
@@ -19,6 +21,7 @@ plot_list = ["sine","duck","buck","cuck"]
 ### main application class
 class MyApp:
  #Has to first create all the required gui and wait for events
+  cnt_log_thd = 0
   def __init__(self):
 	try:
 	   builder = gtk.Builder()
@@ -49,12 +52,23 @@ class MyApp:
   	print "Exiting App"
 	gtk.main_quit()
 
-  def on_showlog_clicked(self,widget,data=None)
+  def on_showlog_clicked(self,widget,data=None):
 	#has to read from the log.csv
+	try:
+	    if(self.cnt_log_thd == 0):
+                thread.start_new_thread(thd_showlog,())
+		pdb.set_trace()
+                self.cnt_log_thd += 1
+	        print "thread created"
+            else: print "thread is already created"
+	except:
+	    print 'Error: unable to start the thread'
+
 
 	
 ## End of event handlers ##
 
+## start of class methods ##
   def plotArea_init(self):
   	#for placing and initialising the plot area
 	self.fig = Figure(figsize=(5,5), dpi=100)
@@ -73,9 +87,26 @@ class MyApp:
   def main(self):
 	self.root.show_all()
 	gtk.main()
-  
+## end of class methods ##
+
+## Start of thread bodys ##
+def thd_showlog():
+        print 'Inside log thread'	
+	ifile = open("log.csv")
+	for i in range(0,10):
+		string = ifile.readline()
+		print "Printing "
+		myapp1.tv_log_buffer.set_text(string)
+		print "string:", string
+		time.sleep(0.3)
+	ifile.close()
+
+## End of thread bodys ##
+
+
 if __name__ == "__main__":
 	myapp = MyApp()
+	myapp1 = myapp
 	myapp.main()
 
 
